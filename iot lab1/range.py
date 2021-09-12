@@ -2,7 +2,7 @@ import RPi.GPIO as GPIO
 import time
 import socket
 GPIO.setmode(GPIO.BCM)
-UDP_IP = "10.192.134.107"
+UDP_IP = "10.189.114.212" # IP we send to
 UDP_PORT = 2598
 MESSAGE = ""
 TRIG = 23
