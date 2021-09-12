@@ -13,9 +13,9 @@ def Main():
     message = input("-> ")
     while message !='q':
         s.sendto(message.encode('utf-8'), server)
-        data, addr = s.recvfrom(1024)
-        data = data.decode('utf-8')
-        print("Received from server: " + data)
+        # data, addr = s.recvfrom(1024)
+        # data = data.decode('utf-8')
+        # print("Received from server: " + data)
         message = input("-> ")
     s.close()
 

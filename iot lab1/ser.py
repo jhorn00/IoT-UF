@@ -13,10 +13,14 @@ def Main():
         data, addr = s.recvfrom(1024)
         data = data.decode('utf-8')
         print("Message from: " + str(addr))
-        print("From connected user: " + data)
-        data = data.upper()
-        print("Sending: " + data)
-        s.sendto(data.encode('utf-8'), addr)
+        # print("From connected user: " + data)
+        # data = data.upper()
+        # print("Sending: " + data)
+        # s.sendto(data.encode('utf-8'), addr)
+        file_object = open('cloud.txt', 'a')
+        file_object.write(str(data))
+        file_object.write("\n")
+        file_object.close()
     c.close()
 
 if __name__=='__main__':
