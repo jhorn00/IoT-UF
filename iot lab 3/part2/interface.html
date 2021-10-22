@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Lab 3</title>
+	<link rel="stylesheet" type="text/css" href="anime.css">  <!-- For animated lettering -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/animejs@3.0.1/lib/anime.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	
+	<script>
+		function getcurrentBPM()
+		{
+			const Http = new XMLHttpRequest();
+			const url='http://10.189.113.162:8080/bpm';
+			Http.open("GET", url);
+			Http.onreadystatechange = (e) => {
+				if (Http.status==200)
+					document.getElementById("member2").value = Http.response;
+				else
+					alert('Could not connect');
+			}
+			Http.send();
+		}
+		
+		function setcurrentBPM()
+		{
+			const Http = new XMLHttpRequest();
+			const url='http://10.189.113.162:8080/bpm';
+			Http.open("PUT", url);
+			Http.send(JSON.stringify(document.getElementById("member4").value));
+		}
+		
+		function getminBPM()
+		{
+			const Http = new XMLHttpRequest();
+			const url='http://10.189.113.162:8080/bpm/min';
+			Http.open("GET", url);
+			Http.onreadystatechange = (e) => {
+				if (Http.status==200)
+					document.getElementById("member1").value = Http.response;
+				else
+					alert('Could not connect');
+			}
+			Http.send();
+		}
+		
+		function deleteminBPM()
+		{
+			const Http = new XMLHttpRequest();
+			const url='http://10.189.113.162:8080/bpm/min';
+			Http.open("DELETE", url);
+			Http.send();
+		}
+		
+		function getmaxBPM()
+		{
+			const Http = new XMLHttpRequest();
+			const url='http://10.189.113.162:8080/bpm/max';
+			Http.open("GET", url);
+			Http.onreadystatechange = (e) => {
+				if (Http.status==200)
+					document.getElementById("member3").value = Http.response;
+				else
+					alert('Could not connect');
+			}
+			Http.send();
+		}
+		
+		function deletemaxBPM()
+		{
+			const Http = new XMLHttpRequest();
+			const url='http://10.189.113.162:8080/bpm/max';
+			Http.open("DELETE", url);
+			Http.send();
+		}
+		
+		function refreshbpm()
+		{
+			getcurrentBPM();
+			getminBPM();
+			getmaxBPM();
+		}
+		
+		function setbpm()
+		{	
+			setcurrentBPM();
+			
+			setTimeout(() => {  refreshbpm(); }, 500);
+		}
+		function resetbpm()
+		{
+			deleteminBPM();
+			deletemaxBPM();
+			setTimeout(() => {  refreshbpm(); }, 500);
+		}
+	</script>
+	
+</head>
+
+<style>
+	#outer
+	{
+		width:100%;
+		text-align: center;
+	}
+	.inner
+	{
+		display: inline-block;
+		margin-left:7px;
+	}
+	input 
+	{
+		display: inline-block;
+		width: 6em;
+		position: relative;
+		top: -3.5em;
+		text-align: center;
+	}
+	label 
+	{
+		text-align: center;
+		display: inline-block;
+		width: 6em;
+		margin-right: .5em;
+		padding-top: 1.5em;
+		font-size: 1.2em;
+	}
+</style>
+
+<body>
+	<p style="text-align:right; margin-right:7px; font-size:1.05em"> 
+		Josh Abraham, AJ Adams, Dawson Horn <br>
+		Group 3
+	</p>
+
+	<h1 class="ml1">
+		<span class="text-wrapper">
+			<span class="line line1"></span>
+			<span class="letters">Rest API Web App</span>
+			<span class="line line2"></span>
+		</span>
+	</h1>
+	<script src = "anime.js"></script> <!--For letter animation-->
+	
+	
+	<br>
+	<br>
+	<form id="sg1" style="text-align: center">
+		<label>Minimum <input name="member1" id="member1" value="0" readonly/></label>
+		<label>Current <input name="member2" id="member2" value="0" readonly/></label>
+		<label>Maximum <input name="member3" id="member3" value="0" readonly/></label>
+	</form>
+	
+	<div id="outer">
+		<div class="inner"><button type="button" onClick="refreshbpm()" class="btn btn-lg btn-primary">
+			<span class="btn-label"><i class="fa fa-refresh"></i></span> Refresh BPM</button></div>
+		<div class="inner"><button type="button" onClick="setbpm()" class="btn btn-lg btn-primary">
+			<span class="btn-label"><i class="fa fa-edit"></i></span> Set BPM</button></div>
+		<div class="inner"><button type="button" onClick="resetbpm()" class="btn btn-lg btn-primary">
+			<span class="btn-label"><i class="fa fa-undo"></i></span> Reset Min/Max BPM</button></div>
+	</div>
+	
+	<br>
+	
+	<form id="sg1" style="text-align: center">
+		<label>SetBPM <input id="member4" value="0"/></label>
+	</form>
+	
+</body>
+</html>
