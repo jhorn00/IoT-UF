@@ -8,6 +8,8 @@
 int main() {
 	//setup and set to off
 	wiringPiSetup();
+	pinMode(SPEAKER, OUTPUT);
+	pinMode(LED, OUTPUT);
 	digitalWrite(SPEAKER, LOW);
 	digitalWrite(LED, LOW);
 	for (int i = 0; i < 4; i++) {
