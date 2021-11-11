@@ -1,0 +1,439 @@
+<Atlas_IoTDDL>
+	<Atlas_Thing>
+		<Descriptive_Metadata>
+			<Thing_ATID>MySmartThing01</Thing_ATID>
+			<Thing_Name></Thing_Name>
+			<Thing_Owner></Thing_Owner>
+			<Thing_Vendor></Thing_Vendor>
+			<Thing_Model></Thing_Model>
+			<Thing_ReleaseDate>8/2020</Thing_ReleaseDate>
+			<Thing_Type></Thing_Type>
+			<Thing_OperatingSystem></Thing_OperatingSystem>
+			<Thing_ShortDescription></Thing_ShortDescription>
+			<LongDescription></LongDescription>
+			<Thing_SSID>MySmartSpace</Thing_SSID>
+			<Space_Coordinates></Space_Coordinates>
+			<Space_Name></Space_Name>
+			<Space_Description></Space_Description>
+			<Space_Constraints>
+				<Temperature>
+					<Lower_Bound></Lower_Bound>
+					<Upper_Bound></Upper_Bound>
+				</Temperature>
+				<Humidity>
+					<Lower_Bound></Lower_Bound>
+					<Upper_Bound></Upper_Bound>
+				</Humidity>
+				<Voltage>
+					<Lower_Bound></Lower_Bound>
+					<Upper_Bound></Upper_Bound>
+				</Voltage>
+				<Radio_Interference_Radius></Radio_Interference_Radius>
+				<Safe_Temperature_Radius></Safe_Temperature_Radius>
+			</Space_Constraints>
+		</Descriptive_Metadata>
+		<Administrative_Metadata>
+			<Network_Manager>
+				<Module></Module>
+				<Type></Type>
+				<Network_Name>MySpaceNetwork</Network_Name>
+				<Network_Passcode>MySpaceNetwork</Network_Passcode>
+				<MulticastGroup>
+					<IP>232.1.1.1</IP>
+					<Port>1235</Port>
+				</MulticastGroup>
+				<Communication_Protocol></Communication_Protocol>
+				<InterOperableCommunication>
+					<Broker>
+						<Vendor>HiveMQ</Vendor>
+						<Dashboard>http://www.mqtt-dashboard.com/</Dashboard>
+						<IP>broker.hivemq.com</IP>
+						<Port>1883</Port>
+					</Broker>
+					<Topic>
+						<Root>/Atlas</Root>
+						<Network_MQTTClient>/Network/MQTT_Client</Network_MQTTClient>
+						<Network_PrivateBroker>/Network/Private_Broker</Network_PrivateBroker>
+						<Multicast_ThingIdentity>/Multicast/Tweet_ThingIdentity</Multicast_ThingIdentity>
+						<Multicast_EntityIdentity>/Multicast/Tweet_EntityIdentity</Multicast_EntityIdentity>
+						<Multicast_API>/Multicast/API</Multicast_API>
+						<Unicast>/Unicast/Interaction</Unicast>
+					</Topic>
+				</InterOperableCommunication>
+				<OMA_DM>
+					<AccessName>Eclipse Leshan</AccessName>
+					<IP>coap://leshan.eclipseprojects.io</IP>
+					<Port>5683</Port>
+				</OMA_DM>
+			</Network_Manager>
+			<Memory_Manager>
+				<Store_Format></Store_Format>
+				<MemoryUnit_Application></MemoryUnit_Application>
+				<MemoryUnit_Knowledge></MemoryUnit_Knowledge>
+			</Memory_Manager>
+		</Administrative_Metadata>
+		<Thing_Attachment>
+
+		</Thing_Attachment>
+		<Structural_Metadata>
+			<Number_Hardware>0</Number_Hardware>
+			<Number_Software>0</Number_Software>
+			<Number_Hybrid>0</Number_Hybrid>
+			<Number_Entities>4</Number_Entities>
+		</Structural_Metadata>
+	</Atlas_Thing>
+	<Atlas_Entities>
+		<Entity_1>
+			<Descriptive_Metadata>
+				<ID>DistanceSensor</ID>
+				<Name></Name>
+				<Owner></Owner>
+				<Vendor></Vendor>
+				<Category></Category>
+				<Type></Type>
+				<Description></Description>
+			</Descriptive_Metadata>
+			<Services>
+				<Service_1>
+					<Name>DistanceInch</Name>
+					<AppCategory></AppCategory>
+					<Type></Type>
+					<Keywords></Keywords>
+					<Description></Description>
+					<Contextual_Constraints>
+						<Time_Window>3seconds</Time_Window>
+						<Usage_Mode>Multiple</Usage_Mode>
+						<Concurrent>Yes</Concurrent>
+					</Contextual_Constraints>
+					<Temporal_Constraints>
+						<Working>
+							<StartTime>12am</StartTime>
+							<EndTime>11:59pm</EndTime>
+						</Working>
+						<Callable>
+							<StartTime>12am</StartTime>
+							<EndTime>11:59pm</EndTime>
+						</Callable>
+					</Temporal_Constraints>
+					<OutputDescription>DistanceInInch</OutputDescription>
+					<OutputType>int</OutputType>
+					<Service_Formula><![CDATA[
+// ~ Service body C/C++ code block ~  
+// You can use the inputs you defined above by name  
+// Any return values should match the specified output type
+
+const int trigger = 23;
+const int echo = 24;
+
+//startup
+unsigned int start = 0, end = 0, ttime = 0;
+wiringPiSetup();
+
+pinMode(trigger, OUTPUT);
+pinMode(echo, INPUT);
+digitalWrite(trigger, LOW);
+delay(500); 
+//get distance
+delay(10); 
+
+digitalWrite(trigger, HIGH);
+delayMicroseconds(10);
+digitalWrite(trigger, LOW);
+
+while(digitalRead(echo) == LOW) { start = micros(); }                                                                                                   
+while(digitalRead(echo) == HIGH) { end = micros(); } 
+
+ttime = end - start;
+double distanceCM = 100.0*(((double)ttime/1000000.0)*340.29)/2.0;                                                                                                                         
+//return
+DistanceInInch = (int)(distanceCM / 2.54);
+]]></Service_Formula>
+					<Service_NumberInputs>0</Service_NumberInputs>
+					<Service_InputTypes></Service_InputTypes>
+					<Service_InputDescriptions></Service_InputDescriptions>
+				</Service_1>
+				<Service_2>
+					<Name>DistanceCM</Name>
+					<AppCategory></AppCategory>
+					<Type></Type>
+					<Keywords></Keywords>
+					<Description></Description>
+					<Contextual_Constraints>
+						<Time_Window>3seconds</Time_Window>
+						<Usage_Mode>Multiple</Usage_Mode>
+						<Concurrent>Yes</Concurrent>
+					</Contextual_Constraints>
+					<Temporal_Constraints>
+						<Working>
+							<StartTime>12am</StartTime>
+							<EndTime>11:59pm</EndTime>
+						</Working>
+						<Callable>
+							<StartTime>12am</StartTime>
+							<EndTime>11:59pm</EndTime>
+						</Callable>
+					</Temporal_Constraints>
+					<OutputDescription>DistanceInCM</OutputDescription>
+					<OutputType>int</OutputType>
+					<Service_Formula><![CDATA[
+// ~ Service body C/C++ code block ~  
+// You can use the inputs you defined above by name  
+// Any return values should match the specified output type
+
+const int trigger = 23;
+const int echo = 24;
+
+//startup
+unsigned int start = 0, end = 0, ttime = 0;
+wiringPiSetup();
+
+pinMode(trigger, OUTPUT);
+pinMode(echo, INPUT);
+digitalWrite(trigger, LOW);
+delay(500); 
+//get distance
+delay(10); 
+
+digitalWrite(trigger, HIGH);
+delayMicroseconds(10);
+digitalWrite(trigger, LOW);
+
+while(digitalRead(echo) == LOW){ start = micros(); }                                                                                                   
+while(digitalRead(echo) == HIGH) { end = micros(); } 
+
+ttime = end - start;
+double distanceCM = 100.0*(((double)ttime/1000000.0)*340.29)/2.0;                                                                                                                         
+//return
+DistanceInCM = (int)distanceCM;
+]]></Service_Formula>
+					<Service_NumberInputs>0</Service_NumberInputs>
+					<Service_InputTypes></Service_InputTypes>
+					<Service_InputDescriptions></Service_InputDescriptions>
+				</Service_2>
+				<Number_Services>2</Number_Services>
+			</Services>
+			<UnboundedService>
+				<Number_UnboundedServices>0</Number_UnboundedServices>
+			</UnboundedService>
+			<Relationships>
+				<Number_Relationships>0</Number_Relationships>
+			</Relationships>
+		</Entity_1>
+		<Entity_2>
+			<Descriptive_Metadata>
+				<ID>Button</ID>
+				<Name></Name>
+				<Owner></Owner>
+				<Vendor></Vendor>
+				<Category></Category>
+				<Type></Type>
+				<Description></Description>
+			</Descriptive_Metadata>
+			<Services>
+				<Service_1>
+					<Name>Toggle</Name>
+					<AppCategory></AppCategory>
+					<Type></Type>
+					<Keywords></Keywords>
+					<Description></Description>
+					<Contextual_Constraints>
+						<Time_Window>0seconds</Time_Window>
+						<Usage_Mode>Multiple</Usage_Mode>
+						<Concurrent>Yes</Concurrent>
+					</Contextual_Constraints>
+					<Temporal_Constraints>
+						<Working>
+							<StartTime>12am</StartTime>
+							<EndTime>11:59pm</EndTime>
+						</Working>
+						<Callable>
+							<StartTime>12am</StartTime>
+							<EndTime>11:59pm</EndTime>
+						</Callable>
+					</Temporal_Constraints>
+					<OutputDescription>status</OutputDescription>
+					<OutputType>int</OutputType>
+					<Service_Formula><![CDATA[
+// ~ Service body C/C++ code block ~
+// You can use the inputs you defined above by name
+// Any return values should match the specified output type
+const int TOGGLE = 4;
+wiringPiSetup();
+
+pinMode(TOGGLE, INPUT);
+while(true)
+{
+	if(digitalRead(TOGGLE) == HIGH)
+	{
+		//tell python to change the mode
+		//when it changes the mode it should also call this service again
+		if (current == 1){
+		    status = 2; 
+		    break;
+		}
+		else {
+		    status = 1;
+		    break;
+		}
+	}
+}
+]]></Service_Formula>
+					<Service_NumberInputs>1</Service_NumberInputs>
+					<Service_InputTypes>int</Service_InputTypes>
+					<Service_InputDescriptions>"current"</Service_InputDescriptions>
+				</Service_1>
+				<Number_Services>1</Number_Services>
+			</Services>
+			<UnboundedService>
+				<Number_UnboundedServices>0</Number_UnboundedServices>
+			</UnboundedService>
+			<Relationships>
+				<Number_Relationships>0</Number_Relationships>
+			</Relationships>
+		</Entity_2>
+		<Entity_3>
+			<Descriptive_Metadata>
+				<ID>Alarm</ID>
+				<Name></Name>
+				<Owner></Owner>
+				<Vendor></Vendor>
+				<Category></Category>
+				<Type></Type>
+				<Description></Description>
+			</Descriptive_Metadata>
+			<Services>
+				<Service_1>
+					<Name>NormalAlarm</Name>
+					<AppCategory></AppCategory>
+					<Type></Type>
+					<Keywords></Keywords>
+					<Description></Description>
+					<Contextual_Constraints>
+						<Time_Window>3seconds</Time_Window>
+						<Usage_Mode>Multiple</Usage_Mode>
+						<Concurrent>Yes</Concurrent>
+					</Contextual_Constraints>
+					<Temporal_Constraints>
+						<Working>
+							<StartTime>12am</StartTime>
+							<EndTime>11:59pm</EndTime>
+						</Working>
+						<Callable>
+							<StartTime>12am</StartTime>
+							<EndTime>11:59pm</EndTime>
+						</Callable>
+					</Temporal_Constraints>
+					<OutputDescription></OutputDescription>
+					<OutputType>void</OutputType>
+					<Service_Formula><![CDATA[
+// ~ Service body C/C++ code block ~
+// You can use the inputs you defined above by name
+// Any return values should match the specified output type
+
+const int SPEAKER = 21;
+const int LED = 6;
+
+//setup and set to off
+wiringPiSetup();
+pinMode(SPEAKER, OUTPUT);
+pinMode(LED, OUTPUT);
+
+digitalWrite(SPEAKER, LOW);
+digitalWrite(LED, LOW);
+
+for (int i = 0; i < 4; i++) {
+	digitalWrite(SPEAKER, HIGH);
+	digitalWrite(LED, HIGH);
+
+	delay(100);
+
+	digitalWrite(SPEAKER, LOW);
+	digitalWrite(LED, LOW);
+
+	delay(200);
+}
+]]></Service_Formula>
+					<Service_NumberInputs>0</Service_NumberInputs>
+					<Service_InputTypes></Service_InputTypes>
+					<Service_InputDescriptions></Service_InputDescriptions>
+				</Service_1>
+				<Service_2>
+					<Name>MuteAlarm</Name>
+					<AppCategory></AppCategory>
+					<Type></Type>
+					<Keywords></Keywords>
+					<Description></Description>
+					<Contextual_Constraints>
+						<Time_Window>3seconds</Time_Window>
+						<Usage_Mode>Multiple</Usage_Mode>
+						<Concurrent>Yes</Concurrent>
+					</Contextual_Constraints>
+					<Temporal_Constraints>
+						<Working>
+							<StartTime>12am</StartTime>
+							<EndTime>11:59pm</EndTime>
+						</Working>
+						<Callable>
+							<StartTime>12am</StartTime>
+							<EndTime>11:59pm</EndTime>
+						</Callable>
+					</Temporal_Constraints>
+					<OutputDescription></OutputDescription>
+					<OutputType>void</OutputType>
+					<Service_Formula><![CDATA[
+// ~ Service body C/C++ code block ~
+// You can use the inputs you defined above by name
+// Any return values should match the specified output type
+const int LED = 6;
+
+//setup and set to off
+wiringPiSetup();
+pinMode(LED, OUTPUT);
+
+digitalWrite(LED, LOW);
+
+for (int i = 0; i < 4; i++) {
+	digitalWrite(LED, HIGH);
+
+	delay(100);
+
+	digitalWrite(LED, LOW);
+
+	delay(200);
+}
+]]></Service_Formula>
+					<Service_NumberInputs>0</Service_NumberInputs>
+					<Service_InputTypes></Service_InputTypes>
+					<Service_InputDescriptions></Service_InputDescriptions>
+				</Service_2>
+				<Number_Services>2</Number_Services>
+			</Services>
+			<UnboundedService>
+				<Number_UnboundedServices>0</Number_UnboundedServices>
+			</UnboundedService>
+			<Relationships>
+				<Number_Relationships>0</Number_Relationships>
+			</Relationships>
+		</Entity_3>
+		<Entity_4>
+			<Descriptive_Metadata>
+				<ID></ID>
+				<Name></Name>
+				<Owner></Owner>
+				<Vendor></Vendor>
+				<Category></Category>
+				<Type></Type>
+				<Description></Description>
+			</Descriptive_Metadata>
+			<Services>
+				<Number_Services>0</Number_Services>
+			</Services>
+			<UnboundedService>
+				<Number_UnboundedServices>0</Number_UnboundedServices>
+			</UnboundedService>
+			<Relationships>
+				<Number_Relationships>0</Number_Relationships>
+			</Relationships>
+		</Entity_4>
+	</Atlas_Entities>
+</Atlas_IoTDDL>
